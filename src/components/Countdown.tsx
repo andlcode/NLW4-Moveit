@@ -5,34 +5,24 @@ import styles from "../styles/components/Countdown.module.css";
 let countdownTimeout: NodeJS.Timeout
 
 export function Countdown() {
-    /**
-     * O countdown precisa começar de um tempo e ir diminuindo em segundos.
-     * (25 minutos * 60 segundos.)
-     */
+    const {startNewChallenge} = useContext(ChallengesContext);
     const [time, setTime] = useState(0.1 * 60);
     const  contextData = useContext(ChallengesContext);
-    console.log(contextData);
+  //  console.log(contextData);
     const [hasFinished, setHasFinished] = useState(false);
-    // Estado para mostrar se a contagem finalizou
 
-    // Estado da contage, se está ativa ou não, no começo está inativo.
     const [isActive, setIsActive] = useState(false);
 
-    // Retornando o número de minutos totais.
     const minutes = Math.floor(time / 60);
-    // Retornando o resto da divisão.
     const seconds = time % 60;
 
-    // Retornando apenas o "primeiro" e o "segundo" número do minuto.
     const [minuteLeft, minuteRight] = String(minutes)
         .padStart(2, "0")
         .split("");
-    // Retornando apenas o "primeiro" e o "segundo" número do segundo.
     const [secondLeft, secondRight] = String(seconds)
         .padStart(2, "0")
         .split("");
 
-    // Função para iniciar a contagem.
     function startCountdown() {
         setIsActive(true);
     }
@@ -52,6 +42,7 @@ export function Countdown() {
         } else if( isActive && time === 0) {
             setHasFinished(true);
             setIsActive(false);
+            startNewChallenge(); 
         }
     }, [isActive, time]);
 
